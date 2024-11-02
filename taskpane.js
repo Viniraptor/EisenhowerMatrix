@@ -28,7 +28,12 @@ function loadEmails() {
                     'Authorization': `Bearer ${accessToken}`
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log("Emails fetched successfully");
                 const emailList = data.value;
@@ -39,7 +44,7 @@ function loadEmails() {
                     emailElement.ondragstart = drag;
                     emailElement.id = email.id;
                     emailElement.innerText = `${email.subject}`;
-                    document.getElementById('emailsContainer').appendChild(emailElement);
+                    document.querySelector('.emails').appendChild(emailElement);
                 });
             })
             .catch(error => {
@@ -66,8 +71,8 @@ function drop(event) {
     console.log("Dropping item on target:", event.target);
     const data = event.dataTransfer.getData("text");
     const emailElement = document.getElementById(data);
-    if (event.target.id === 'dropZone') {
-        event.target.appendChild(emailElement);
+    if (event.target.classList.contains('quadrant')) {
+        event.target.querySelector('.emails').appendChild(emailElement);
     } else {
         console.warn("Drop attempted on incorrect target");
     }
