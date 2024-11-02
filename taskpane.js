@@ -1,14 +1,24 @@
 Office.onReady(function (info) {
     if (info.host === Office.HostType.Outlook) {
-        // Code to execute when the task pane is ready
-        loadEmails();
+        if (info.platform === Office.PlatformType.PC || info.platform === Office.PlatformType.Web) {
+            // Office is ready
+            console.log("Outlook Add-in is ready on PC or Web");
+            try {
+                loadEmails(); // Call to load emails
+            } catch (error) {
+                console.error("Error calling loadEmails:", error);
+            }
+        } else {
+            console.warn("Outlook Add-in is running on an unsupported platform");
+        }
     }
 });
 
 function loadEmails() {
-    // Load unread emails into a draggable list
+    console.log("Loading emails...");
     Office.context.mailbox.getCallbackTokenAsync({ isRest: true }, function (result) {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
+            console.log("Access token received");
             const accessToken = result.value;
             const mailboxUrl = Office.context.mailbox.restUrl;
             const requestUrl = `${mailboxUrl}/v2.0/me/mailfolders/inbox/messages?$filter=isRead eq false`;
@@ -20,6 +30,7 @@ function loadEmails() {
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Emails fetched successfully");
                 const emailList = data.value;
                 emailList.forEach((email) => {
                     const emailElement = document.createElement('div');
@@ -42,21 +53,22 @@ function loadEmails() {
 
 function allowDrop(event) {
     event.preventDefault();
-    event.target.style.border = "2px solid #00f"; // Highlight the drop zone
+    console.log("Allowing drop on target:", event.target);
 }
 
 function drag(event) {
+    console.log("Dragging item:", event.target.id);
     event.dataTransfer.setData("text", event.target.id);
 }
 
 function drop(event) {
     event.preventDefault();
-    event.target.style.border = "2px dashed #ccc"; // Reset the border style
+    console.log("Dropping item on target:", event.target);
     const data = event.dataTransfer.getData("text");
     const emailElement = document.getElementById(data);
-    document.getElementById('dropZone').appendChild(emailElement);
+    if (event.target.id === 'dropZone') {
+        event.target.appendChild(emailElement);
+    } else {
+        console.warn("Drop attempted on incorrect target");
+    }
 }
-
-// Add this to your HTML file or task pane:
-// <div id="emailsContainer" style="padding: 10px; border: 1px solid #ddd;">Drag emails here to view</div>
-// <div id="dropZone" ondrop="drop(event)" ondragover="allowDrop(event)" style="border: 2px dashed #ccc; min-height: 200px; margin-top: 20px;">Drop emails here</div>
