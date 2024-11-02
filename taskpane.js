@@ -28,7 +28,7 @@ function loadEmails() {
                     emailElement.ondragstart = drag;
                     emailElement.id = email.id;
                     emailElement.innerText = `${email.subject}`;
-                    document.body.appendChild(emailElement);
+                    document.getElementById('emailsContainer').appendChild(emailElement);
                 });
             })
             .catch(error => {
@@ -42,6 +42,7 @@ function loadEmails() {
 
 function allowDrop(event) {
     event.preventDefault();
+    event.target.style.border = "2px solid #00f"; // Highlight the drop zone
 }
 
 function drag(event) {
@@ -50,17 +51,12 @@ function drag(event) {
 
 function drop(event) {
     event.preventDefault();
+    event.target.style.border = "2px dashed #ccc"; // Reset the border style
     const data = event.dataTransfer.getData("text");
     const emailElement = document.getElementById(data);
-    event.target.appendChild(emailElement);
+    document.getElementById('dropZone').appendChild(emailElement);
 }
 
-// For integration with real emails from Office.js APIs
-function getEmails() {
-    Office.context.mailbox.item.subject.getAsync(function (result) {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-            const emailSubject = result.value;
-            // Perform necessary actions with the email subject
-        }
-    });
-}
+// Add this to your HTML file or task pane:
+// <div id="emailsContainer" style="padding: 10px; border: 1px solid #ddd;">Drag emails here to view</div>
+// <div id="dropZone" ondrop="drop(event)" ondragover="allowDrop(event)" style="border: 2px dashed #ccc; min-height: 200px; margin-top: 20px;">Drop emails here</div>
