@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eisenhower Matrix Plugin</title>
+    <link rel="stylesheet" type="text/css" href="taskpane.css" />
+</head>
+<body>
+    <h1>Eisenhower Matrix for Emails</h1>
+    <div class="eisenhower-matrix">
+        <div id="important-urgent" class="quadrant" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Important & Urgent (Tag: ASAP)</h2>
+            <div class="emails"></div>
+        </div>
+        <div id="important-not-urgent" class="quadrant" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Important & Not Urgent (Tag: Important)</h2>
+            <div class="emails"></div>
+        </div>
+        <div id="not-important-urgent" class="quadrant" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Not Important & Urgent (Tag: Urgent)</h2>
+            <div class="emails"></div>
+        </div>
+        <div id="not-important-not-urgent" class="quadrant" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Not Important & Not Urgent (Tag: Left)</h2>
+            <div class="emails"></div>
+        </div>
+    </div>
+    <script src="taskpane.js"></script>
+</body>
+</html>
