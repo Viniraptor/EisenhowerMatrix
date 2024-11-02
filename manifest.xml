@@ -1,21 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:type="MailApp">
+<?xml version="1.0" encoding="utf-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
+
   <Id>2b906602-88bf-4be4-8941-d5cddbf87ab9</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>VINI DIRTY PLUGINS</ProviderName>
+  <ProviderName>YourCompanyName</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName>Eisenhower Matrix Plugin</DisplayName>
-  <Description>
-    Eisenhower Matrix Plugin to help organize your emails based on urgency and importance.
-  </Description>
-  <IconUrl>https://viniraptor.github.io/EisenhowerMatrix/icon.png</IconUrl>
-  <HighResolutionIconUrl>https://viniraptor.github.io/EisenhowerMatrix/hiresicon.png</HighResolutionIconUrl>
-  <SupportUrl>https://viniraptor.github.io/EisenhowerMatrix/support</SupportUrl>
+  <DisplayName DefaultValue="Eisenhower Matrix Plugin" />
+  <Description DefaultValue="Eisenhower Matrix Plugin to help organize your emails based on urgency and importance." />
+  <IconUrl DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/icon.png" />
+  <HighResolutionIconUrl DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/hiresicon.png" />
+  <SupportUrl DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/support" />
+  
+  <AppDomains>
+    <AppDomain>https://viniraptor.github.io</AppDomain>
+  </AppDomains>
 
   <Hosts>
-    <Host>Name="Mailbox"</Host>
+    <Host Name="Mailbox" />
   </Hosts>
 
   <Requirements>
@@ -24,31 +25,61 @@
     </Sets>
   </Requirements>
 
-  <FormSettings>
-    <Form xsi:type="ItemRead">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/taskpane.html" />
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
-    <Form xsi:type="MessageRead">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/taskpane.html" />
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
-  </FormSettings>
-
-  <Permissions>ReadWriteMailbox</Permissions>
-  <Rule xsi:type="RuleCollection" Mode="Or">
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
-  </Rule>
-
-  <DisableEntityHighlighting>false</DisableEntityHighlighting>
-
-  <Action xsi:type="ShowTaskPane">
+  <DefaultSettings>
     <SourceLocation DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/taskpane.html" />
-    <Title>Eisenhower Matrix for Emails</Title>
-  </Action>
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Mailbox">
+        <DesktopFormFactor>
+          <FunctionFile resid="EisenhowerMatrix.FunctionFile.Url" />
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="EisenhowerMatrix.Group">
+                <Label resid="EisenhowerMatrix.GroupLabel" />
+                <Control xsi:type="Button" id="EisenhowerMatrix.TaskpaneButton">
+                  <Label resid="EisenhowerMatrix.TaskpaneButton.Label" />
+                  <Supertip>
+                    <Title resid="EisenhowerMatrix.TaskpaneButton.Label" />
+                    <Description resid="EisenhowerMatrix.TaskpaneButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="EisenhowerMatrix.Icon.16" />
+                    <bt:Image size="32" resid="EisenhowerMatrix.Icon.32" />
+                    <bt:Image size="80" resid="EisenhowerMatrix.Icon.80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="EisenhowerMatrix.Taskpane.Url" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="EisenhowerMatrix.Icon.16" DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/icon-16.png" />
+        <bt:Image id="EisenhowerMatrix.Icon.32" DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/icon-32.png" />
+        <bt:Image id="EisenhowerMatrix.Icon.80" DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/icon-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="EisenhowerMatrix.FunctionFile.Url" DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/functionfile.html" />
+        <bt:Url id="EisenhowerMatrix.Taskpane.Url" DefaultValue="https://viniraptor.github.io/EisenhowerMatrix/taskpane.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="EisenhowerMatrix.GroupLabel" DefaultValue="Eisenhower Matrix Tools" />
+        <bt:String id="EisenhowerMatrix.TaskpaneButton.Label" DefaultValue="Open Eisenhower Matrix" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="EisenhowerMatrix.TaskpaneButton.Tooltip" DefaultValue="Click to open the Eisenhower Matrix task pane." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+
 </OfficeApp>
